@@ -1,0 +1,216 @@
+[gd_scene load_steps=23 format=3 uid="uid://dhorhurepxfmr"]
+
+[ext_resource type="PackedScene" uid="uid://b3v3y3ph7wxck" path="res://src/prefabs/player.tscn" id="1_o5qli"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sgp6g"]
+size = Vector3(25, 2, 10)
+
+[sub_resource type="Gradient" id="Gradient_kkvs4"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rr2wm"]
+gradient = SubResource("Gradient_kkvs4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kkvs4"]
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.27058825, 0.34901962, 0.6431373, 1)
+detail_enabled = true
+detail_mask = SubResource("GradientTexture1D_rr2wm")
+detail_blend_mode = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_o5qli"]
+material = SubResource("StandardMaterial3D_kkvs4")
+size = Vector3(25, 2, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o5qli"]
+size = Vector3(5, 2, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rr2wm"]
+albedo_color = Color(1, 0.5568628, 1, 1)
+metallic = 0.38
+
+[sub_resource type="BoxMesh" id="BoxMesh_o81g6"]
+material = SubResource("StandardMaterial3D_rr2wm")
+size = Vector3(5, 2, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kkvs4"]
+size = Vector3(5.868225, 1, 5.0009766)
+
+[sub_resource type="Gradient" id="Gradient_32aa5"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5dlwx"]
+gradient = SubResource("Gradient_32aa5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o81g6"]
+albedo_color = Color(0.61960787, 0.11764706, 0.21568628, 1)
+metallic = 0.75
+metallic_specular = 0.6
+roughness = 0.5
+roughness_texture = SubResource("GradientTexture1D_5dlwx")
+
+[sub_resource type="BoxMesh" id="BoxMesh_32aa5"]
+material = SubResource("StandardMaterial3D_o81g6")
+size = Vector3(5.868225, 1, 5.0009766)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rr2wm"]
+size = Vector3(2.8116455, 0.59765625, 4.8133545)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5dlwx"]
+size = Vector3(2.8116455, 0.59765625, 4.8133545)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_32aa5"]
+size = Vector3(3.6616364, 3.939242, 4.2558594)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dbro3"]
+size = Vector3(3.6616364, 3.939242, 4.2558594)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5dlwx"]
+size = Vector3(0.3, 1.8127193, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rr2wm"]
+size = Vector3(0.3, 1.8127193, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o81g6"]
+size = Vector3(3.6835785, 0.45837402, 6.2910156)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kkvs4"]
+size = Vector3(3.6835785, 0.45837402, 6.2910156)
+
+[node name="Main" type="Node3D"]
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -1, -2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Floor"]
+shape = SubResource("BoxShape3D_sgp6g")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Floor"]
+mesh = SubResource("BoxMesh_o5qli")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.613434, 1.1267805, -1.9768982)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D"]
+shape = SubResource("BoxShape3D_o5qli")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D"]
+mesh = SubResource("BoxMesh_o81g6")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.171999, 0.5932064, 0.55368423)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D3"]
+shape = SubResource("BoxShape3D_kkvs4")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D3"]
+mesh = SubResource("BoxMesh_32aa5")
+metadata/_edit_lock_ = true
+
+[node name="Slope" type="StaticBody3D" parent="World"]
+transform = Transform3D(0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0, 1, -9.162756, 0.12619591, 0.5611744)
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Slope"]
+shape = SubResource("BoxShape3D_rr2wm")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Slope"]
+mesh = SubResource("BoxMesh_5dlwx")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.363901, 2.0567076, -4.103859)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D2"]
+shape = SubResource("BoxShape3D_32aa5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D2"]
+mesh = SubResource("BoxMesh_dbro3")
+
+[node name="Table" type="Node3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2269287, 0, -3.0454874)
+
+[node name="FenceLeg" type="StaticBody3D" parent="World/Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.70039797, 0.91909194, 2.9772904)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceLeg"]
+shape = SubResource("BoxShape3D_5dlwx")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceLeg"]
+mesh = SubResource("BoxMesh_rr2wm")
+skeleton = NodePath("../../../..")
+metadata/_edit_lock_ = true
+
+[node name="FenceLeg3" type="StaticBody3D" parent="World/Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.657753, 0.90603137, -2.9306688)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceLeg3"]
+shape = SubResource("BoxShape3D_5dlwx")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceLeg3"]
+mesh = SubResource("BoxMesh_rr2wm")
+skeleton = NodePath("../../../..")
+metadata/_edit_lock_ = true
+
+[node name="FenceLeg4" type="StaticBody3D" parent="World/Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.640976, 0.9281719, -2.9823847)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceLeg4"]
+shape = SubResource("BoxShape3D_5dlwx")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceLeg4"]
+mesh = SubResource("BoxMesh_rr2wm")
+skeleton = NodePath("../../../..")
+metadata/_edit_lock_ = true
+
+[node name="FenceLeg2" type="StaticBody3D" parent="World/Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6634047, 0.92121434, 2.9855804)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceLeg2"]
+mesh = SubResource("BoxMesh_rr2wm")
+skeleton = NodePath("../../../..")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceLeg2"]
+shape = SubResource("BoxShape3D_5dlwx")
+metadata/_edit_lock_ = true
+
+[node name="FenceTop" type="StaticBody3D" parent="World/Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9756856, 1.8812313, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceTop"]
+shape = SubResource("BoxShape3D_o81g6")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceTop"]
+mesh = SubResource("BoxMesh_kkvs4")
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." node_paths=PackedStringArray("Cam") instance=ExtResource("1_o5qli")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.974677, 0.9977751, 0.9370575)
+Cam = NodePath("../Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.89879405, -0.25143936, 0.35909262, 0, 0.81915206, 0.57357645, -0.43837115, -0.5155271, 0.73624897, -0.7015734, 6.344061, 8.402339)
+fov = 65.1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.15577939, 0.987792, 0, -0.987792, 0.15577939, -6.3605957, 11.801392, 3.060791)
+
+[node name="TextEdit" type="TextEdit" parent="."]
+anchors_preset = -1
+anchor_right = 0.08400001
+anchor_bottom = 0.133
+offset_right = 0.23199463
+offset_bottom = -0.18399811
+text = "mues"

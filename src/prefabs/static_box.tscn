@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://br0sv8ein0b1p"]
+
+[ext_resource type="Script" uid="uid://f8vqhf5xoiqv" path="res://src/scripts/StaticBox3D.cs" id="1_qhl4j"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ri7b8"]
+lightmap_size_hint = Vector2i(14, 21)
+
+[node name="StaticBox" type="StaticBody3D"]
+script = ExtResource("1_qhl4j")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("BoxMesh_ri7b8")
+skeleton = NodePath("")

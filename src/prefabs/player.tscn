@@ -1,0 +1,251 @@
+[gd_scene load_steps=15 format=3 uid="uid://b3v3y3ph7wxck"]
+
+[ext_resource type="Script" uid="uid://cxwkvt7m2wsn7" path="res://src/scripts/Player.cs" id="1_72ieh"]
+
+[sub_resource type="Curve" id="Curve_744qn"]
+_data = [Vector2(0, 0), 0.0, 2.3451903, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_j7lg1"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_72ieh"]
+size = Vector3(0.5, 0.25, 0.5)
+
+[sub_resource type="Curve" id="Curve_e4ep1"]
+_data = [Vector2(0.10619469, 0), 0.0, 21.765654, 0, 0, Vector2(0.47345132, 0.26966298), 93.95565, 93.95565, 0, 0, Vector2(0.96902657, 0.11235964), 26.662912, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_744qn"]
+curve_x = SubResource("Curve_e4ep1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j7lg1"]
+albedo_color = Color(1, 0.5058824, 0.16862746, 1)
+detail_enabled = true
+detail_mask = SubResource("CurveXYZTexture_744qn")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_72ieh"]
+material = SubResource("StandardMaterial3D_j7lg1")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e4ep1"]
+radius = 0.52
+height = 1.5020508
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fp3wc"]
+
+[sub_resource type="Animation" id="Animation_744qn"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Meshes/body:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Meshes/body:mesh:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Meshes/head:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.51927584, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("StandingColliosion:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CrouchingCollision:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_e4ep1"]
+resource_name = "crouch"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Meshes/body:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -0.23360857, -0.083333336, 0.038934764, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Meshes/body:mesh:height")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 1.5, -0.083333336, 0.083333336, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Meshes/head:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0.51927584, -0.25, 0, 0.25, 0, 0.13437366, -0.083333336, 0.06415036, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("StandingColliosion:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CrouchingCollision:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_j7lg1"]
+resource_name = "jump"
+length = 0.3
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Meshes/body:mesh:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 1.6, -0.16666667, 0.06666666, 0, 0, 1.6, -0.16666667, 0.06666666, 0, 0, 2, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.06666663, 0.26666668, 0.3, 0.6)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Meshes/body:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -0.2, -0.16666667, 0.033333335, 0, 0, -0.2, -0.16666667, 0.033333335, 0, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.06666663, 0.26666668, 0.3, 0.6)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Meshes/head:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(2, 0, 0, 0, 0),
+"points": PackedFloat32Array(0.5518537, -0.25, 0, 0.25, 0, 0.14982301, -0.083333336, 0, 0.083333336, 0, 0.14982301, -0.083333336, 0, 0.083333336, 0, 0.5518537, -0.25, 0, 0.25, 0, 0.5518537, -0.16666667, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.06666665, 0.26666668, 0.3, 0.6)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j7lg1"]
+_data = {
+&"RESET": SubResource("Animation_744qn"),
+&"crouch": SubResource("Animation_e4ep1"),
+&"jump": SubResource("Animation_j7lg1")
+}
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("Meshes", "JumpTimer", "HangTimer", "CrouchRay", "Ani")]
+script = ExtResource("1_72ieh")
+CAYOTE_TIME = 0.2
+curve_easing = SubResource("Curve_744qn")
+curve_linear = SubResource("Curve_j7lg1")
+Meshes = NodePath("Meshes")
+JumpTimer = NodePath("JumpTimer")
+HangTimer = NodePath("HangTimer")
+CrouchRay = NodePath("CrouchRay")
+Ani = NodePath("AnimationPlayer")
+
+[node name="Meshes" type="Node3D" parent="."]
+transform = Transform3D(0.99999845, 0, -0.0017453283, 0, 1, 0, 0.0017453283, 0, 0.99999845, 0, -0.00046899915, 0)
+
+[node name="head" type="MeshInstance3D" parent="Meshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3736868, 0.51927584, -0.012357146)
+mesh = SubResource("BoxMesh_72ieh")
+skeleton = NodePath("../body")
+
+[node name="body" type="MeshInstance3D" parent="Meshes"]
+mesh = SubResource("CapsuleMesh_72ieh")
+skeleton = NodePath("../..")
+
+[node name="CrouchingCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2350387, 0)
+shape = SubResource("CapsuleShape3D_e4ep1")
+disabled = true
+
+[node name="StandingColliosion" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_fp3wc")
+
+[node name="JumpTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="HangTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_j7lg1")
+}
+
+[node name="CrouchRay" type="RayCast3D" parent="."]
+target_position = Vector3(0, 1, 0)
+debug_shape_custom_color = Color(0.87058824, 0.11764706, 1, 1)
+
+[connection signal="timeout" from="JumpTimer" to="." method="OnJump"]
+[connection signal="timeout" from="HangTimer" to="." method="OnHangTimeEnd"]
