@@ -3,22 +3,18 @@ using System;
 
 public partial class StaticBox3D : StaticBody3D
 {
-	// Called when the node enters the scene tree for the first time.
+    // Called when the node enters the scene tree for the first time.
     // [Export] public CollisionShape3D Shape;
-	public override void _Ready()
+    public override void _Ready()
     {
-        // MeshInstance3D m = GetNode<MeshInstance3D>("Mesh");
+        MeshInstance3D MeshInst = GetNode<MeshInstance3D>("Mesh");
+        CollisionShape3D ColShape = GetNode<CollisionShape3D>("Shape");
 
-        // ShapeOwnerGetShape()
+        BoxShape3D Shape = new()
+        {
+            Size = ((BoxMesh)MeshInst.Mesh).Size
+        };
 
-        // if (m.Mesh != null)
-        // {
-        //     m.Mesh.Size = ;
-        // }
+        ColShape.Shape = Shape;
     }
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	// public override void _Process(double delta)
-	// {
-	// }
 }

@@ -1,6 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://dhorhurepxfmr"]
+[gd_scene load_steps=24 format=3 uid="uid://dhorhurepxfmr"]
 
 [ext_resource type="PackedScene" uid="uid://b3v3y3ph7wxck" path="res://src/prefabs/player.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://dllbrlw5c3gbu" path="res://src/scenes/CameraController.cs" id="2_rr2wm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sgp6g"]
 size = Vector3(25, 2, 10)
@@ -200,17 +201,25 @@ metadata/_edit_lock_ = true
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.974677, 0.9977751, 0.9370575)
 Cam = NodePath("../Camera3D")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.89879405, -0.25143936, 0.35909262, 0, 0.81915206, 0.57357645, -0.43837115, -0.5155271, 0.73624897, -0.7015734, 6.344061, 8.402339)
-fov = 65.1
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.15577939, 0.987792, 0, -0.987792, 0.15577939, -6.3605957, 11.801392, 3.060791)
 
-[node name="TextEdit" type="TextEdit" parent="."]
-anchors_preset = -1
-anchor_right = 0.08400001
-anchor_bottom = 0.133
-offset_right = 0.23199463
-offset_bottom = -0.18399811
-text = "mues"
+[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("Player", "Camera", "CamRotX", "CamRotY", "CamZoom")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.400635, 1.295166, 0.24328613)
+script = ExtResource("2_rr2wm")
+Player = NodePath("../Player")
+Camera = NodePath("../Camera3D")
+CamRotX = NodePath("CamX/CamY")
+CamRotY = NodePath("CamX")
+CamZoom = NodePath("CamX/CamY/CamZoom")
+
+[node name="CamX" type="Node3D" parent="CameraController"]
+
+[node name="CamY" type="Node3D" parent="CameraController/CamX"]
+transform = Transform3D(1, 0, 0, 0, 0.9230827, 0.38460144, 0, -0.38460144, 0.9230827, 0, 0, 0)
+
+[node name="CamZoom" type="Node3D" parent="CameraController/CamX/CamY"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+fov = 65.1

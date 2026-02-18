@@ -11,18 +11,8 @@ public partial class Player : CharacterBody3D
         Falling,
         Hanging
     };
-    private enum ControlTypes
-    {
-        // ONE = Immediate acceleration, and immediate stop at deceleration.  (Immediate velocity change)
-        ONE = 0,
-        // TWO = Slow constant Acceleration, fast constant deceleration. (literature figure 7.16) (Linear velocity change)
-        TWO,
-        // THREE = Ease acceleration, and constant deceleration.  (literature figure 7.11)
-        THREE
-    }
     [ExportGroup("Custom")]
     [Export] private StateP PlayerState = StateP.Falling;
-    [Export] private ControlTypes ControlType = ControlTypes.ONE;
     // [Export] private float StretchHeight = 1.2f;
     // [Export] private float SquishHeight = 0.8f;
     // [Export] private Curve EaseCurve;
@@ -36,7 +26,6 @@ public partial class Player : CharacterBody3D
     [Export] public Curve curve_easing;
     [Export] public Curve curve_linear;
 
-    private (float, float) timers;
     private float TimerAcceleration = 0;
     private float TimerDeceleration = 0;
 
@@ -61,8 +50,6 @@ public partial class Player : CharacterBody3D
     {
         public static readonly StringName crouch = "crouch";
         public static readonly StringName jump = "jump";
-        public static readonly StringName[] set_move = ["set_move_1", "set_move_2", "set_move_3"];
-        public static StringName Get_set_move(int idx) { return set_move[idx - 1]; }
     }
 
     // public override void _Ready()
@@ -87,6 +74,21 @@ public partial class Player : CharacterBody3D
     {
         // get input direction
         Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
+
+        // float joyX = Input.GetJoyAxis(0, JoyAxis.LeftX);
+        // float joyY = Input.GetJoyAxis(0, JoyAxis.LeftY);
+
+        // joyX = Mathf.Abs(joyX) < 0.01f ? 0 : joyX;
+        // joyY = Mathf.Abs(joyY) < 0.01f ? 0 : joyY;
+
+        Vector2 inputDirJoy = new(Input.GetJoyAxis(0, JoyAxis.LeftX), Input.GetJoyAxis(0, JoyAxis.LeftY));
+        // GD.PrintS(inputDirJoy, inputDirJoy.LengthSquared());
+        if (inputDirJoy.LengthSquared() < 0.003f)
+        {
+            inputDirJoy = Vector2.Zero;
+        }
+
+        if (inputDir == Vector2.Zero) { inputDir = inputDirJoy; }
 
         Vector3 direction = (Cam.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
@@ -191,16 +193,6 @@ public partial class Player : CharacterBody3D
         }
         SpeedCurrent = Mathf.Lerp(SpeedCurrent, PlayerState != StateP.Crouching ? SPEED_WALK : SPEED_CROUCH, 0.5f);
 
-        for (int i = 0; i < STR.set_move.Length; i++)
-        {
-            if (Input.IsActionJustPressed(STR.set_move[i]))
-            {
-                ResetTimers();
-                // ik it bad, ok?
-                ControlType = (ControlTypes)i;
-                break;
-            }
-        }
 
         HandleMovementZX(ref velocity, (float)delta);
 
