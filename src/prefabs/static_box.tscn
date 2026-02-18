@@ -1,17 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://br0sv8ein0b1p"]
+[gd_scene load_steps=5 format=3 uid="uid://br0sv8ein0b1p"]
 
 [ext_resource type="Script" uid="uid://f8vqhf5xoiqv" path="res://src/scripts/StaticBox3D.cs" id="1_qhl4j"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_qhl4j"]
+[ext_resource type="Material" uid="uid://dd1pc1wmyogqo" path="res://src/prefabs/grid_material.tres" id="2_ri7b8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qhl4j"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qhl4j"]
 
 [node name="StaticBox" type="StaticBody3D"]
 script = ExtResource("1_qhl4j")
 
+[node name="Shape" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_qhl4j")
+
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_qhl4j")
 skeleton = NodePath("")
-
-[node name="Shape" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_qhl4j")
+surface_material_override/0 = ExtResource("2_ri7b8")

@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://dhorhurepxfmr"]
+[gd_scene load_steps=25 format=3 uid="uid://dhorhurepxfmr"]
 
+[ext_resource type="Material" uid="uid://dd1pc1wmyogqo" path="res://src/prefabs/grid_material.tres" id="1_32aa5"]
 [ext_resource type="PackedScene" uid="uid://b3v3y3ph7wxck" path="res://src/prefabs/player.tscn" id="1_o5qli"]
-[ext_resource type="Script" uid="uid://dllbrlw5c3gbu" path="res://src/scenes/CameraController.cs" id="2_rr2wm"]
+[ext_resource type="PackedScene" uid="uid://bjqi335chpm8p" path="res://src/prefabs/camera_controller.tscn" id="2_rr2wm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sgp6g"]
 size = Vector3(25, 2, 10)
@@ -79,6 +80,33 @@ size = Vector3(3.6835785, 0.45837402, 6.2910156)
 
 [node name="Main" type="Node3D"]
 
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1719666, -0.5921631, -21.961472)
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+size = Vector3(15, 2, 29.444336)
+material = ExtResource("1_32aa5")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3771896, 5.157776, 8.923835)
+radius = 3.0527344
+height = 9.277588
+material = ExtResource("1_32aa5")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.827518, 5.157654, -7.6694183)
+radius = 3.0527344
+height = 9.277588
+material = ExtResource("1_32aa5")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5006618, 5.157776, 0.5791378)
+material_override = ExtResource("1_32aa5")
+radius = 3.0527344
+height = 9.277588
+material = ExtResource("1_32aa5")
+
 [node name="World" type="Node3D" parent="."]
 
 [node name="Floor" type="StaticBody3D" parent="World"]
@@ -137,6 +165,7 @@ mesh = SubResource("BoxMesh_dbro3")
 
 [node name="Table" type="Node3D" parent="World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2269287, 0, -3.0454874)
+visible = false
 
 [node name="FenceLeg" type="StaticBody3D" parent="World/Table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.70039797, 0.91909194, 2.9772904)
@@ -204,22 +233,10 @@ Cam = NodePath("../Camera3D")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.15577939, 0.987792, 0, -0.987792, 0.15577939, -6.3605957, 11.801392, 3.060791)
 
-[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("Player", "Camera", "CamRotX", "CamRotY", "CamZoom")]
+[node name="CameraController" parent="." node_paths=PackedStringArray("Player", "Camera") instance=ExtResource("2_rr2wm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.400635, 1.295166, 0.24328613)
-script = ExtResource("2_rr2wm")
 Player = NodePath("../Player")
 Camera = NodePath("../Camera3D")
-CamRotX = NodePath("CamX/CamY")
-CamRotY = NodePath("CamX")
-CamZoom = NodePath("CamX/CamY/CamZoom")
-
-[node name="CamX" type="Node3D" parent="CameraController"]
-
-[node name="CamY" type="Node3D" parent="CameraController/CamX"]
-transform = Transform3D(1, 0, 0, 0, 0.9230827, 0.38460144, 0, -0.38460144, 0.9230827, 0, 0, 0)
-
-[node name="CamZoom" type="Node3D" parent="CameraController/CamX/CamY"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 fov = 65.1

@@ -45,7 +45,7 @@ public partial class Player : CharacterBody3D
 
     private Vector3 lastDir = new(0, 0, 0);
     private float CayoteAccumulator = 0;
-
+    public Vector3 Direction;
     readonly struct STR
     {
         public static readonly StringName crouch = "crouch";
@@ -90,11 +90,11 @@ public partial class Player : CharacterBody3D
 
         if (inputDir == Vector2.Zero) { inputDir = inputDirJoy; }
 
-        Vector3 direction = (Cam.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+        Direction = (Cam.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
-        if (direction != Vector3.Zero)
+        if (Direction != Vector3.Zero)
         {
-            lastDir = direction;
+            lastDir = Direction;
         }
 
         // rotation
@@ -103,7 +103,7 @@ public partial class Player : CharacterBody3D
             Basis rotBasis = new();
 
             rotBasis.Z = (lastDir * new Vector3(1, 0, 1)).Normalized();
-            rotBasis.X = rotBasis.Z.Cross(Vector3.Down);
+            rotBasis.X = Vector3.Up.Cross(rotBasis.Z);
             rotBasis.Y = rotBasis.Z.Cross(rotBasis.X);
 
             Quaternion a = new(Meshes.Basis);
@@ -116,7 +116,7 @@ public partial class Player : CharacterBody3D
         // Vector2 XZ;
 
 
-        if (direction != Vector3.Zero)
+        if (Direction != Vector3.Zero)
         {
             TimerDeceleration = 0;
             TimerAcceleration += delta;
@@ -141,6 +141,11 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (Input.IsActionJustPressed("restart"))
+        {
+            GetTree().ReloadCurrentScene();
+            return;
+        }
         Vector3 velocity = Velocity;
         if (IsOnFloor())
         {
@@ -150,22 +155,22 @@ public partial class Player : CharacterBody3D
             * don't uncrouch if there's no room
             * slightly buggy on edgecases
             */
-            if (Input.IsActionPressed(STR.crouch) || CrouchRay.IsColliding())
-            {
-                if (PlayerState != StateP.Crouching)
-                {
-                    Ani.Play(STR.crouch);
-                    PlayerState = StateP.Crouching;
-                }
-            }
-            else
-            {
-                if (PlayerState == StateP.Crouching && !CrouchRay.IsColliding())
-                {
-                    Ani.PlayBackwards(STR.crouch);
-                    PlayerState = StateP.Grounded;
-                }
-            }
+            // if (Input.IsActionPressed(STR.crouch) || CrouchRay.IsColliding())
+            // {
+            //     if (PlayerState != StateP.Crouching)
+            //     {
+            //         Ani.Play(STR.crouch);
+            //         PlayerState = StateP.Crouching;
+            //     }
+            // }
+            // else
+            // {
+            //     if (PlayerState == StateP.Crouching && !CrouchRay.IsColliding())
+            //     {
+            //         Ani.PlayBackwards(STR.crouch);
+            //         PlayerState = StateP.Grounded;
+            //     }
+            // }
         }
         else
         {

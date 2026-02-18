@@ -20,26 +20,34 @@ public partial class CameraController : Node3D
     }
     [Export] float Weight = 0.2f;
     [ExportGroup("Nodes")]
-    [Export] Node3D Player;
+    [Export] Player Player;
+    Vector3 Target;
     [Export] Camera3D Camera;
     [ExportSubgroup("CameraHierachy")]
     [Export] Node3D CamRotX;
     [Export] Node3D CamRotY;
     [Export] Node3D CamZoom;
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         GlobalPosition = Player.GlobalPosition;
+        Target = Target.Lerp(Player.GlobalPosition, 0.1f);
         Camera.GlobalPosition = CamZoom.GlobalPosition;
         Camera.GlobalRotation = CamZoom.GlobalRotation;
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        DebugDraw3D.DrawSphere(GlobalPosition);
-        GlobalPosition = GlobalPosition.Slerp(Player.GlobalPosition, Weight);
-        Camera.GlobalPosition = Camera.GlobalPosition.Slerp(CamZoom.GlobalPosition, Weight);
+        Target = Player.GlobalPosition + Player.Direction;
+
+        GlobalPosition = GlobalPosition.Lerp(
+            Player.GlobalPosition
+            .Lerp(Target, Weight)
+            , Weight);
+
+        Camera.GlobalPosition = Camera.GlobalPosition.Lerp(CamZoom.GlobalPosition, Weight);
         Camera.GlobalRotation = Camera.GlobalRotation.Slerp(CamZoom.GlobalRotation, Weight);
+
+        DebugDraw3D.DrawSphere(GlobalPosition);
     }
 
     public override void _Process(double delta)
@@ -51,13 +59,15 @@ public partial class CameraController : Node3D
         // float rx = CamRotX.Rotation.X;
         // rx = Mathf.Clamp(rx + camDir.Y, -1f, 1f);
         // CamRotX.RotateX(camDir.Y);
-        CamRotX.Rotation = new(Mathf.Clamp(CamRotX.Rotation.X + camDelta.Y, -1f, 1f), 0, 0);
+        CamRotX.Rotation = new(Mathf.Clamp(CamRotX.Rotation.X + camDelta.Y, -1.2f, 1f), 0, 0);
 
+        Camera.LookAt(Player.GlobalPosition);
         // Camera.GlobalRotation = Camera.GlobalRotation.Slerp(CamRotZ.GlobalRotation, Weight);
-        Camera.GlobalRotation = new(
-            Mathf.LerpAngle(Camera.GlobalRotation.X, CamZoom.GlobalRotation.X, Weight),
-            Mathf.LerpAngle(Camera.GlobalRotation.Y, CamZoom.GlobalRotation.Y, Weight),
-            Camera.GlobalRotation.Z);
+        // GD.Print(Camera.GlobalRotation);
+        // .GlobalRotation = new(
+        //     Mathf.LerpAngle(Camera.GlobalRotation.X, CamZoom.GlobalRotation.X, Weight),
+        //     Mathf.LerpAngle(Camera.GlobalRotation.Y, CamZoom.GlobalRotation.Y, Weight),
+        //     0);
         // Camera.GlobalRotation = Camera.GlobalRotation.Slerp(CamZoom.GlobalRotation, Weight);
     }
 }

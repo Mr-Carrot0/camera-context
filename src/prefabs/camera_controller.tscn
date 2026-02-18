@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjqi335chpm8p"]
+
+[ext_resource type="Script" uid="uid://dllbrlw5c3gbu" path="res://src/scenes/CameraController.cs" id="1_h8alv"]
+
+[node name="CameraController" type="Node3D" node_paths=PackedStringArray("CamRotX", "CamRotY", "CamZoom")]
+script = ExtResource("1_h8alv")
+CamRotX = NodePath("CamX/CamY")
+CamRotY = NodePath("CamX")
+CamZoom = NodePath("CamX/CamY/CamZoom")
+
+[node name="CamX" type="Node3D" parent="."]
+
+[node name="CamY" type="Node3D" parent="CamX"]
+transform = Transform3D(1, 0, 0, 0, 0.9230827, 0.38460144, 0, -0.38460144, 0.9230827, 0, 0, 0)
+
+[node name="CamZoom" type="Node3D" parent="CamX/CamY"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
