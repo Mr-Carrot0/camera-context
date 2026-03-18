@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bjqi335chpm8p"]
 
-[ext_resource type="Script" uid="uid://dllbrlw5c3gbu" path="res://src/scenes/CameraController.cs" id="1_h8alv"]
+[ext_resource type="Script" uid="uid://dllbrlw5c3gbu" path="res://src/scripts/CameraController.cs" id="1_h8alv"]
 
 [node name="CameraController" type="Node3D" node_paths=PackedStringArray("CamRotX", "CameraYaw", "CamZoom")]
 script = ExtResource("1_h8alv")
