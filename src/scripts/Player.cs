@@ -13,9 +13,6 @@ public partial class Player : CharacterBody3D
     };
     [ExportGroup("Custom")]
     [Export] private StateP PlayerState = StateP.Falling;
-    // [Export] private float StretchHeight = 1.2f;
-    // [Export] private float SquishHeight = 0.8f;
-    // [Export] private Curve EaseCurve;
 
     [ExportGroup("Physics")]
     [Export] public float SPEED_CROUCH = 2f;
@@ -45,7 +42,7 @@ public partial class Player : CharacterBody3D
 
     private Vector3 lastDir = new(0, 0, 0);
     private float CayoteAccumulator = 0;
-    public Vector3 Direction;
+    // public Vector3 Direction;
     readonly struct STR
     {
         public static readonly StringName crouch = "crouch";
@@ -70,16 +67,10 @@ public partial class Player : CharacterBody3D
     {
         PlayerState = StateP.Falling;
     }
-    private void HandleMovementZX(ref Vector3 velocity, float delta)
+    private Vector2 HandleMovementZX(float delta)
     {
         // get input direction
         Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
-
-        // float joyX = Input.GetJoyAxis(0, JoyAxis.LeftX);
-        // float joyY = Input.GetJoyAxis(0, JoyAxis.LeftY);
-
-        // joyX = Mathf.Abs(joyX) < 0.01f ? 0 : joyX;
-        // joyY = Mathf.Abs(joyY) < 0.01f ? 0 : joyY;
 
         Vector2 inputDirJoy = new(Input.GetJoyAxis(0, JoyAxis.LeftX), Input.GetJoyAxis(0, JoyAxis.LeftY));
         // GD.PrintS(inputDirJoy, inputDirJoy.LengthSquared());
@@ -90,7 +81,9 @@ public partial class Player : CharacterBody3D
 
         if (inputDir == Vector2.Zero) { inputDir = inputDirJoy; }
 
-        Direction = (Cam.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+        Vector3 Direction = (Cam.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+
+        // GD.Print(Direction.Length());
 
         if (Direction != Vector3.Zero)
         {
@@ -112,9 +105,7 @@ public partial class Player : CharacterBody3D
             Meshes.Basis = new Basis(a.Slerp(b, 0.1f));
         }
 
-        float sample = -1;
-        // Vector2 XZ;
-
+        float sample;
 
         if (Direction != Vector3.Zero)
         {
@@ -129,15 +120,9 @@ public partial class Player : CharacterBody3D
             sample = 1 - curve_linear.Sample(TimerDeceleration);
         }
 
-        Vector2 XZ = SpeedCurrent * 50 * delta * sample * new Vector2(lastDir.X, lastDir.Z);
-        velocity.X = XZ.X;
-        velocity.Z = XZ.Y;
-
-        // ResetTimers();
+        return 300 * delta * sample * Utils.FlattenVecXZ(new Vector3(Direction.X, 0, Direction.Z).Normalized());
     }
 
-
-    // float timer = 0;
 
     public override void _PhysicsProcess(double delta)
     {
@@ -150,27 +135,6 @@ public partial class Player : CharacterBody3D
         if (IsOnFloor())
         {
             CayoteAccumulator = 0;
-
-            /** Handle crouch
-            * don't uncrouch if there's no room
-            * slightly buggy on edgecases
-            */
-            // if (Input.IsActionPressed(STR.crouch) || CrouchRay.IsColliding())
-            // {
-            //     if (PlayerState != StateP.Crouching)
-            //     {
-            //         Ani.Play(STR.crouch);
-            //         PlayerState = StateP.Crouching;
-            //     }
-            // }
-            // else
-            // {
-            //     if (PlayerState == StateP.Crouching && !CrouchRay.IsColliding())
-            //     {
-            //         Ani.PlayBackwards(STR.crouch);
-            //         PlayerState = StateP.Grounded;
-            //     }
-            // }
         }
         else
         {
@@ -199,7 +163,9 @@ public partial class Player : CharacterBody3D
         SpeedCurrent = Mathf.Lerp(SpeedCurrent, PlayerState != StateP.Crouching ? SPEED_WALK : SPEED_CROUCH, 0.5f);
 
 
-        HandleMovementZX(ref velocity, (float)delta);
+        Vector2 XZ = HandleMovementZX((float)delta);
+        velocity.X = XZ.X;
+        velocity.Z = XZ.Y;
 
         if (PlayerState == StateP.Falling && IsOnFloor())
         {
@@ -208,5 +174,6 @@ public partial class Player : CharacterBody3D
 
         Velocity = velocity;
         MoveAndSlide();
+        GD.Print(Velocity.Length());
     }
 }

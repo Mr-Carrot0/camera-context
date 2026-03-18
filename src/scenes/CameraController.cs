@@ -25,7 +25,7 @@ public partial class CameraController : Node3D
     [Export] Camera3D Camera;
     [ExportSubgroup("CameraHierachy")]
     [Export] Node3D CamRotX;
-    [Export] Node3D CamRotY;
+    [Export] Node3D CameraYaw;
     [Export] Node3D CamZoom;
     public override void _Ready()
     {
@@ -37,7 +37,7 @@ public partial class CameraController : Node3D
 
     public override void _PhysicsProcess(double delta)
     {
-        Target = Player.GlobalPosition + Player.Direction;
+        Target = Player.GlobalPosition + Player.Velocity;
 
         GlobalPosition = GlobalPosition.Lerp(
             Player.GlobalPosition
@@ -52,9 +52,9 @@ public partial class CameraController : Node3D
 
     public override void _Process(double delta)
     {
-        Vector2 camDelta = GetJoy() * 0.05f;
+        Vector2 camDelta = GetJoy() * 1.5f * (float)delta;
 
-        CamRotY.RotateY(camDelta.X);
+        CameraYaw.RotateY(camDelta.X);
 
         // float rx = CamRotX.Rotation.X;
         // rx = Mathf.Clamp(rx + camDir.Y, -1f, 1f);
