@@ -37,7 +37,6 @@ public partial class Player : CharacterBody3D
     [Export] private Node3D Meshes;
     [Export] private Timer JumpTimer;
     [Export] private Timer HangTimer;
-    [Export] private RayCast3D CrouchRay;
     [Export] private AnimationPlayer Ani;
 
     private Vector3 lastDir = new(0, 0, 0);
@@ -48,11 +47,6 @@ public partial class Player : CharacterBody3D
         public static readonly StringName crouch = "crouch";
         public static readonly StringName jump = "jump";
     }
-
-    // public override void _Ready()
-    // {
-    //     // GD.Print(STR.Move_type(1));
-    // }
 
     private void OnJump()
     {
@@ -120,7 +114,7 @@ public partial class Player : CharacterBody3D
             sample = 1 - curve_linear.Sample(TimerDeceleration);
         }
 
-        return 300 * delta * sample * Utils.FlattenVecXZ(new Vector3(Direction.X, 0, Direction.Z).Normalized());
+        return 70 * SpeedCurrent * delta * sample * Utils.FlattenVecXZ(new Vector3(Direction.X, 0, Direction.Z).Normalized());
     }
 
 

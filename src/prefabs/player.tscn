@@ -214,7 +214,7 @@ curve_linear = SubResource("Curve_j7lg1")
 Meshes = NodePath("Meshes")
 JumpTimer = NodePath("JumpTimer")
 HangTimer = NodePath("HangTimer")
-CrouchRay = NodePath("CrouchRay")
+CrouchRay = NodePath("")
 Ani = NodePath("AnimationPlayer")
 
 [node name="Meshes" type="Node3D" parent="."]
@@ -249,10 +249,6 @@ one_shot = true
 libraries = {
 &"": SubResource("AnimationLibrary_j7lg1")
 }
-
-[node name="CrouchRay" type="RayCast3D" parent="."]
-target_position = Vector3(0, 1, 0)
-debug_shape_custom_color = Color(0.87058824, 0.11764706, 1, 1)
 
 [connection signal="timeout" from="JumpTimer" to="." method="OnJump"]
 [connection signal="timeout" from="HangTimer" to="." method="OnHangTimeEnd"]

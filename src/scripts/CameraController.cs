@@ -3,12 +3,12 @@ using System;
 
 public partial class CameraController : Node3D
 {
-    public static Vector2 GetJoy(bool right = true, int device = 0)
+    public static Vector2 GetJoy(bool leftStick = false, int device = 0)
     {
-        Vector2 ret = right switch
+        Vector2 ret = leftStick switch
         {
-            true => new(Input.GetJoyAxis(device, JoyAxis.RightX), Input.GetJoyAxis(device, JoyAxis.RightY)),
-            false => new(Input.GetJoyAxis(device, JoyAxis.LeftX), Input.GetJoyAxis(device, JoyAxis.LeftY)),
+            true => new(Input.GetJoyAxis(device, JoyAxis.LeftX), Input.GetJoyAxis(device, JoyAxis.LeftY)),
+            false => new(Input.GetJoyAxis(device, JoyAxis.RightX), Input.GetJoyAxis(device, JoyAxis.RightY)),
         };
 
         if (ret.LengthSquared() < 0.003f)
@@ -19,16 +19,40 @@ public partial class CameraController : Node3D
         return ret;
     }
     [Export] float Weight = 0.2f;
-    [ExportGroup("Nodes")]
+    // [ExportGroup("Nodes")]
     [Export] Player Player;
     Vector3 Target;
+    short _InvertY; // 1|-1
+    [Export]
+    bool InvertY
+    {
+        set
+        {
+            _InvertY = value switch
+            {
+                true => -1,
+                false => 1,
+            };
+        }
+        get
+        {
+            return _InvertY switch
+            {
+                1 => false,
+                -1 => true,
+            };
+        }
+    }
     [Export] Camera3D Camera;
-    [ExportSubgroup("CameraHierachy")]
-    [Export] Node3D CamRotX;
+    [ExportGroup("CameraHierachy")]
+    [Export] Node3D CamPitch;
     [Export] Node3D CameraYaw;
     [Export] Node3D CamZoom;
+    Vector3 MaxZoom;
+
     public override void _Ready()
     {
+        MaxZoom = CamZoom.Position;
         GlobalPosition = Player.GlobalPosition;
         Target = Target.Lerp(Player.GlobalPosition, 0.1f);
         Camera.GlobalPosition = CamZoom.GlobalPosition;
@@ -52,14 +76,14 @@ public partial class CameraController : Node3D
 
     public override void _Process(double delta)
     {
-        Vector2 camDelta = GetJoy() * 1.5f * (float)delta;
+        Vector2 camDelta = GetJoy() * 2f * (float)delta;
 
-        CameraYaw.RotateY(camDelta.X);
+        CameraYaw.RotateY(_InvertY * camDelta.X);
 
         // float rx = CamRotX.Rotation.X;
         // rx = Mathf.Clamp(rx + camDir.Y, -1f, 1f);
         // CamRotX.RotateX(camDir.Y);
-        CamRotX.Rotation = new(Mathf.Clamp(CamRotX.Rotation.X + camDelta.Y, -1.2f, 1f), 0, 0);
+        CamPitch.Rotation = new(Mathf.Clamp(CamPitch.Rotation.X + camDelta.Y, -1.2f, 1f), 0, 0);
 
         Camera.LookAt(Player.GlobalPosition);
         // Camera.GlobalRotation = Camera.GlobalRotation.Slerp(CamRotZ.GlobalRotation, Weight);

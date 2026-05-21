@@ -2,15 +2,15 @@
 
 [ext_resource type="Script" uid="uid://dllbrlw5c3gbu" path="res://src/scripts/CameraController.cs" id="1_h8alv"]
 
-[node name="CameraController" type="Node3D" node_paths=PackedStringArray("CamRotX", "CameraYaw", "CamZoom")]
+[node name="CameraController" type="Node3D" node_paths=PackedStringArray("CamPitch", "CameraYaw", "CamZoom")]
 script = ExtResource("1_h8alv")
-CamRotX = NodePath("CameraYaw/CamY")
+CamPitch = NodePath("CameraYaw/CamPítch")
 CameraYaw = NodePath("CameraYaw")
-CamZoom = NodePath("CameraYaw/CamY/CamZoom")
+CamZoom = NodePath("CameraYaw/CamPítch/CamZoom")
 
 [node name="CameraYaw" type="Node3D" parent="."]
 
-[node name="CamY" type="Node3D" parent="CameraYaw"]
+[node name="CamPítch" type="Node3D" parent="CameraYaw"]
 
-[node name="CamZoom" type="Node3D" parent="CameraYaw/CamY"]
+[node name="CamZoom" type="Node3D" parent="CameraYaw/CamPítch"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
