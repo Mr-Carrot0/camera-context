@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://dllbrlw5c3gbu" path="res://src/scripts/CameraController.cs" id="1_h8alv"]
 
-[node name="CameraController" type="Node3D" node_paths=PackedStringArray("CamPitch", "CameraYaw", "CamZoom")]
+[node name="CameraController" type="Node3D" node_paths=PackedStringArray("CameraYaw", "CamPitch", "CamZoom")]
 script = ExtResource("1_h8alv")
-CamPitch = NodePath("CameraYaw/CamPítch")
 CameraYaw = NodePath("CameraYaw")
+CamPitch = NodePath("CameraYaw/CamPítch")
 CamZoom = NodePath("CameraYaw/CamPítch/CamZoom")
 
 [node name="CameraYaw" type="Node3D" parent="."]

@@ -206,7 +206,7 @@ _data = {
 &"jump": SubResource("Animation_j7lg1")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("Meshes", "JumpTimer", "HangTimer", "CrouchRay", "Ani")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("Meshes", "JumpTimer", "HangTimer", "Ani")]
 script = ExtResource("1_72ieh")
 CAYOTE_TIME = 0.2
 curve_easing = SubResource("Curve_744qn")
@@ -214,7 +214,6 @@ curve_linear = SubResource("Curve_j7lg1")
 Meshes = NodePath("Meshes")
 JumpTimer = NodePath("JumpTimer")
 HangTimer = NodePath("HangTimer")
-CrouchRay = NodePath("")
 Ani = NodePath("AnimationPlayer")
 
 [node name="Meshes" type="Node3D" parent="."]

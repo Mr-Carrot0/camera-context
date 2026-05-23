@@ -3,20 +3,18 @@ using System;
 
 public partial class Player : CharacterBody3D
 {
-    private enum StateP
+    private enum State
     {
         Grounded,
-        Crouching,
         Jumping,
         Falling,
         Hanging
     };
     [ExportGroup("Custom")]
-    [Export] private StateP PlayerState = StateP.Falling;
+    [Export] private State PlayerState = State.Falling;
 
     [ExportGroup("Physics")]
-    [Export] public float SPEED_CROUCH = 2f;
-    [Export] public float SPEED_WALK = 5.0f;
+    [Export] public float SPEED_MAX = 5.0f;
     [Export] private float CAYOTE_TIME = 0.12f;
     public float SpeedCurrent = 3.0f;
     [Export] public float JumpVelocity = 6f;
@@ -44,13 +42,12 @@ public partial class Player : CharacterBody3D
     // public Vector3 Direction;
     readonly struct STR
     {
-        public static readonly StringName crouch = "crouch";
         public static readonly StringName jump = "jump";
     }
 
     private void OnJump()
     {
-        PlayerState = StateP.Jumping;
+        PlayerState = State.Jumping;
         // Vector3 vel = Velocity;
         // vel.Y = JumpVelocity;
         // Velocity = vel;
@@ -59,7 +56,7 @@ public partial class Player : CharacterBody3D
 
     private void OnHangTimeEnd()
     {
-        PlayerState = StateP.Falling;
+        PlayerState = State.Falling;
     }
     private Vector2 HandleMovementZX(float delta)
     {
@@ -134,40 +131,40 @@ public partial class Player : CharacterBody3D
         {
             CayoteAccumulator += (float)delta;
 
-            if (PlayerState == StateP.Jumping && velocity.Y < 0)
+            if (PlayerState == State.Jumping && velocity.Y < 0)
             {
-                PlayerState = StateP.Hanging;
+                PlayerState = State.Hanging;
                 HangTimer.Start();
             }
 
-            if (PlayerState != StateP.Hanging)
+            if (PlayerState != State.Hanging)
             {
                 velocity += GetGravity() * (float)delta;
             }
         }
 
         // Handle Jump
-        if (Input.IsActionJustPressed(STR.jump) && PlayerState != StateP.Jumping && (CayoteAccumulator < CAYOTE_TIME || IsOnFloor()))
+        if (Input.IsActionJustPressed(STR.jump) && PlayerState != State.Jumping && (CayoteAccumulator < CAYOTE_TIME || IsOnFloor()))
         {
             CayoteAccumulator = 1; // no double jumps allowed 
             JumpTimer.Start();
             Ani.Play(STR.jump);
-            PlayerState = StateP.Jumping;
+            PlayerState = State.Jumping;
         }
-        SpeedCurrent = Mathf.Lerp(SpeedCurrent, PlayerState != StateP.Crouching ? SPEED_WALK : SPEED_CROUCH, 0.5f);
+        SpeedCurrent = Mathf.Lerp(SpeedCurrent, SPEED_MAX, 0.5f);
 
 
         Vector2 XZ = HandleMovementZX((float)delta);
         velocity.X = XZ.X;
         velocity.Z = XZ.Y;
 
-        if (PlayerState == StateP.Falling && IsOnFloor())
+        if (PlayerState == State.Falling && IsOnFloor())
         {
-            PlayerState = StateP.Grounded;
+            PlayerState = State.Grounded;
         }
 
         Velocity = velocity;
         MoveAndSlide();
-        GD.Print(Velocity.Length());
+        // GD.Print(Velocity.Length());
     }
 }

@@ -1,54 +1,33 @@
 using Godot;
 using System;
-
+using Axies = Utils.VectorAxies;
 public partial class CameraController : Node3D
 {
-    public static Vector2 GetJoy(bool leftStick = false, int device = 0)
-    {
-        Vector2 ret = leftStick switch
-        {
-            true => new(Input.GetJoyAxis(device, JoyAxis.LeftX), Input.GetJoyAxis(device, JoyAxis.LeftY)),
-            false => new(Input.GetJoyAxis(device, JoyAxis.RightX), Input.GetJoyAxis(device, JoyAxis.RightY)),
-        };
-
-        if (ret.LengthSquared() < 0.003f)
-        {
-            ret = Vector2.Zero;
-        }
-
-        return ret;
-    }
+    [Export] public bool Enabled = true;
+    enum InvertYEnum : sbyte { NORMAL = 1, INVERTED = -1 }
     [Export] float Weight = 0.2f;
-    // [ExportGroup("Nodes")]
+    [Export] float CameraStrength = 2f;
     [Export] Player Player;
-    Vector3 Target;
-    short _InvertY; // 1|-1
-    [Export]
-    bool InvertY
-    {
-        set
-        {
-            _InvertY = value switch
-            {
-                true => -1,
-                false => 1,
-            };
-        }
-        get
-        {
-            return _InvertY switch
-            {
-                1 => false,
-                -1 => true,
-            };
-        }
-    }
     [Export] Camera3D Camera;
+    Vector3 Target;
+    [Export] InvertYEnum _InvertY = InvertYEnum.NORMAL;// 1|-1
+    sbyte InvertY { get { return (sbyte)_InvertY; } }
+
     [ExportGroup("CameraHierachy")]
-    [Export] Node3D CamPitch;
+    /// <summary>
+    /// rotates when moving stick in X (around the Y-axies)
+    /// </summary>
     [Export] Node3D CameraYaw;
+    /// <summary>
+    /// rotates when moving stick in Y (around X-axies(?))
+    /// </summary>
+    [Export] Node3D CamPitch;
+    /// <summary>
+    /// End of node tree, final transform
+    /// </summary>
     [Export] Node3D CamZoom;
     Vector3 MaxZoom;
+    float timeSinceLastCamInput;
 
     public override void _Ready()
     {
@@ -61,7 +40,8 @@ public partial class CameraController : Node3D
 
     public override void _PhysicsProcess(double delta)
     {
-        Target = Player.GlobalPosition + Player.Velocity;
+        if (!Enabled) return;
+        Target = Player.GlobalPosition + Player.Velocity * 0.5f;
 
         GlobalPosition = GlobalPosition.Lerp(
             Player.GlobalPosition
@@ -76,14 +56,36 @@ public partial class CameraController : Node3D
 
     public override void _Process(double delta)
     {
-        Vector2 camDelta = GetJoy() * 2f * (float)delta;
+        if (!Enabled) return;
+        Vector2 joyStick = Utils.GetJoy();
+        if (joyStick == Vector2.Zero)
+        {
+            if (timeSinceLastCamInput < 300f)
+            {
+                timeSinceLastCamInput++;
+            }
+            else
+            {
+                GD.Print("autocam: ",timeSinceLastCamInput);
+                CamPitch.Rotation = Utils.SetAxies(Mathf.LerpAngle(CamPitch.Rotation.X, 0f, Weight * (float)delta),
+                    Axies.X, CamPitch.Rotation);
+                CameraYaw.Rotation = Utils.SetAxies(Mathf.LerpAngle(CameraYaw.Rotation.Y, 0f, Weight * (float)delta),
+                    Axies.Y, CameraYaw.Rotation);
+                Mathf.LerpAngle(CameraYaw.Rotation.Y, 0f, Weight /* * (float)delta */);
+            }
+        }
+        else
+        {
+            timeSinceLastCamInput = 0;
+            Vector2 camDelta = joyStick * CameraStrength * (float)delta;
 
-        CameraYaw.RotateY(_InvertY * camDelta.X);
+            CameraYaw.RotateY(InvertY * camDelta.X);
 
-        // float rx = CamRotX.Rotation.X;
-        // rx = Mathf.Clamp(rx + camDir.Y, -1f, 1f);
-        // CamRotX.RotateX(camDir.Y);
-        CamPitch.Rotation = new(Mathf.Clamp(CamPitch.Rotation.X + camDelta.Y, -1.2f, 1f), 0, 0);
+            // float rx = CamRotX.Rotation.X;
+            // rx = Mathf.Clamp(rx + camDir.Y, -1f, 1f);
+            // CamRotX.RotateX(camDir.Y);
+            CamPitch.Rotation = new(Mathf.Clamp(CamPitch.Rotation.X + camDelta.Y, -1.2f, 1f), 0, 0);
+        }
 
         Camera.LookAt(Player.GlobalPosition);
         // Camera.GlobalRotation = Camera.GlobalRotation.Slerp(CamRotZ.GlobalRotation, Weight);
