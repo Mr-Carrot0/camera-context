@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://caytxcvk05gbl"]
+
+[ext_resource type="Script" uid="uid://dvfqcb2xxal6r" path="res://src/scripts/RayMod.cs" id="1_cs353"]
+
+[node name="RayMod" type="Node3D"]
+script = ExtResource("1_cs353")

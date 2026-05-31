@@ -1,8 +1,10 @@
-[gd_scene load_steps=25 format=3 uid="uid://dhorhurepxfmr"]
+[gd_scene load_steps=27 format=3 uid="uid://dhorhurepxfmr"]
 
+[ext_resource type="Script" uid="uid://jm2w0viwqese" path="res://src/scripts/Main.cs" id="1_5dlwx"]
 [ext_resource type="Material" uid="uid://dd1pc1wmyogqo" path="res://src/prefabs/grid_material.tres" id="1_32aa5"]
 [ext_resource type="PackedScene" uid="uid://b3v3y3ph7wxck" path="res://src/prefabs/player.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://bjqi335chpm8p" path="res://src/prefabs/camera_controller.tscn" id="2_rr2wm"]
+[ext_resource type="PackedScene" uid="uid://br0sv8ein0b1p" path="res://src/prefabs/static_box.tscn" id="3_o81g6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sgp6g"]
 size = Vector3(25, 2, 10)
@@ -78,7 +80,20 @@ size = Vector3(3.6835785, 0.45837402, 6.2910156)
 [sub_resource type="BoxMesh" id="BoxMesh_kkvs4"]
 size = Vector3(3.6835785, 0.45837402, 6.2910156)
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" node_paths=PackedStringArray("_P1", "_CamControl", "_Cam3D")]
+script = ExtResource("1_5dlwx")
+_P1 = NodePath("Player")
+_CamControl = NodePath("CameraController")
+_Cam3D = NodePath("env/Camera3D")
+
+[node name="env" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="env"]
+transform = Transform3D(0.99211687, -3.6959236e-09, -0.12531592, 0.036398217, 0.9568897, 0.288162, 0.119913496, -0.29045168, 0.9493464, -4.875107, 3.6218262, 0)
+fov = 65.1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(1, 0, 0, 0, 0.3879982, 0.9216602, 0, -0.9216602, 0.3879982, -3.3775024, 18.079956, -19.0812)
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1719666, -1.0152478, -32.19302)
@@ -108,136 +123,135 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.34444857, 4.142406, -32.87
 radius = 3.0527344
 height = 9.277588
 
-[node name="World" type="Node3D" parent="."]
+[node name="old-World" type="Node3D" parent="."]
 
-[node name="Floor" type="StaticBody3D" parent="World"]
+[node name="Floor" type="StaticBody3D" parent="old-World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -1, -2)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Floor"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/Floor"]
 shape = SubResource("BoxShape3D_sgp6g")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Floor"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/Floor"]
 mesh = SubResource("BoxMesh_o5qli")
 metadata/_edit_lock_ = true
 
-[node name="StaticBody3D" type="StaticBody3D" parent="World"]
+[node name="StaticBody3D" type="StaticBody3D" parent="old-World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.613434, 1.1267805, -1.9768982)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/StaticBody3D"]
 shape = SubResource("BoxShape3D_o5qli")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/StaticBody3D"]
 mesh = SubResource("BoxMesh_o81g6")
 metadata/_edit_lock_ = true
 
-[node name="StaticBody3D3" type="StaticBody3D" parent="World"]
+[node name="StaticBody3D3" type="StaticBody3D" parent="old-World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.171999, 0.5932064, 0.55368423)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/StaticBody3D3"]
 shape = SubResource("BoxShape3D_kkvs4")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/StaticBody3D3"]
 mesh = SubResource("BoxMesh_32aa5")
 metadata/_edit_lock_ = true
 
-[node name="Slope" type="StaticBody3D" parent="World"]
+[node name="Slope" type="StaticBody3D" parent="old-World"]
 transform = Transform3D(0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0, 0, 1, -9.162756, 0.12619591, 0.5611744)
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Slope"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/Slope"]
 shape = SubResource("BoxShape3D_rr2wm")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Slope"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/Slope"]
 mesh = SubResource("BoxMesh_5dlwx")
 metadata/_edit_lock_ = true
 
-[node name="StaticBody3D2" type="StaticBody3D" parent="World"]
+[node name="StaticBody3D2" type="StaticBody3D" parent="old-World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.363901, 2.0567076, -4.103859)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/StaticBody3D2"]
 shape = SubResource("BoxShape3D_32aa5")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/StaticBody3D2"]
 mesh = SubResource("BoxMesh_dbro3")
 
-[node name="Table" type="Node3D" parent="World"]
+[node name="Table" type="Node3D" parent="old-World"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.109097, -0.22619438, -13.619584)
 
-[node name="FenceLeg" type="StaticBody3D" parent="World/Table"]
+[node name="FenceLeg" type="StaticBody3D" parent="old-World/Table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.70039797, 0.91909194, 2.9772904)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceLeg"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/Table/FenceLeg"]
 shape = SubResource("BoxShape3D_5dlwx")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceLeg"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/Table/FenceLeg"]
 mesh = SubResource("BoxMesh_rr2wm")
 skeleton = NodePath("../../../..")
 metadata/_edit_lock_ = true
 
-[node name="FenceLeg3" type="StaticBody3D" parent="World/Table"]
+[node name="FenceLeg3" type="StaticBody3D" parent="old-World/Table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.657753, 0.90603137, -2.9306688)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceLeg3"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/Table/FenceLeg3"]
 shape = SubResource("BoxShape3D_5dlwx")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceLeg3"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/Table/FenceLeg3"]
 mesh = SubResource("BoxMesh_rr2wm")
 skeleton = NodePath("../../../..")
 metadata/_edit_lock_ = true
 
-[node name="FenceLeg4" type="StaticBody3D" parent="World/Table"]
+[node name="FenceLeg4" type="StaticBody3D" parent="old-World/Table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.640976, 0.9281719, -2.9823847)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceLeg4"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/Table/FenceLeg4"]
 shape = SubResource("BoxShape3D_5dlwx")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceLeg4"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/Table/FenceLeg4"]
 mesh = SubResource("BoxMesh_rr2wm")
 skeleton = NodePath("../../../..")
 metadata/_edit_lock_ = true
 
-[node name="FenceLeg2" type="StaticBody3D" parent="World/Table"]
+[node name="FenceLeg2" type="StaticBody3D" parent="old-World/Table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6634047, 0.92121434, 2.9855804)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceLeg2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/Table/FenceLeg2"]
 mesh = SubResource("BoxMesh_rr2wm")
 skeleton = NodePath("../../../..")
 metadata/_edit_lock_ = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceLeg2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/Table/FenceLeg2"]
 shape = SubResource("BoxShape3D_5dlwx")
 metadata/_edit_lock_ = true
 
-[node name="FenceTop" type="StaticBody3D" parent="World/Table"]
+[node name="FenceTop" type="StaticBody3D" parent="old-World/Table"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9756856, 1.8812313, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Table/FenceTop"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="old-World/Table/FenceTop"]
 shape = SubResource("BoxShape3D_o81g6")
 metadata/_edit_lock_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Table/FenceTop"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="old-World/Table/FenceTop"]
 mesh = SubResource("BoxMesh_kkvs4")
 metadata/_edit_lock_ = true
 
+[node name="StaticBox" parent="old-World" instance=ExtResource("3_o81g6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.588745, 2.1184082, -7.864887)
+
+[node name="StaticBox2" parent="old-World" instance=ExtResource("3_o81g6")]
+transform = Transform3D(0.80652714, -0.5911971, 0, 0.5911971, 0.80652714, 0, 0, 0, 1, -16.12854, 0.33294678, -6.5242805)
+
 [node name="Player" parent="." node_paths=PackedStringArray("Cam") instance=ExtResource("1_o5qli")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -5.3169928, 0.9977751, -5.272537)
-Cam = NodePath("../Camera3D")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3169928, 0.9977751, -5.272537)
+Cam = NodePath("../env/Camera3D")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.3879982, 0.9216602, 0, -0.9216602, 0.3879982, -3.3775024, 18.079956, -19.0812)
-
-[node name="CameraController" parent="." node_paths=PackedStringArray("Player", "Camera") instance=ExtResource("2_rr2wm")]
+[node name="CameraController" parent="." node_paths=PackedStringArray("player", "Camera") instance=ExtResource("2_rr2wm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.400635, 1.295166, 0.24328613)
-Player = NodePath("../Player")
-Camera = NodePath("../Camera3D")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.99211687, 0, -0.12531593, 0.036398217, 0.9568896, 0.28816202, 0.119913496, -0.29045165, 0.94934636, -4.875107, 3.6218262, 0)
-fov = 65.1
+player = NodePath("../Player")
+Camera = NodePath("../env/Camera3D")

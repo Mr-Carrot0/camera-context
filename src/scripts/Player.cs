@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 
 public partial class Player : CharacterBody3D
 {
@@ -30,6 +31,8 @@ public partial class Player : CharacterBody3D
         if (TimerDeceleration >= 1) TimerDeceleration = 0;
     }
 
+    public Vector3 ActualRotation { get { return Meshes.GlobalRotation; } }
+
     [ExportGroup("Nodes")]
     [Export] private Camera3D Cam;
     [Export] private Node3D Meshes;
@@ -44,6 +47,11 @@ public partial class Player : CharacterBody3D
     {
         public static readonly StringName jump = "jump";
     }
+    public override void _Ready()
+    {
+        Debug.Assert(Utils.RayExlude.Contains(GetRid()));
+    }
+
 
     private void OnJump()
     {
@@ -90,10 +98,10 @@ public partial class Player : CharacterBody3D
             rotBasis.X = Vector3.Up.Cross(rotBasis.Z);
             rotBasis.Y = rotBasis.Z.Cross(rotBasis.X);
 
-            Quaternion a = new(Meshes.Basis);
+            Quaternion a = new(this.Basis);
             Quaternion b = new(rotBasis);
 
-            Meshes.Basis = new Basis(a.Slerp(b, 0.1f));
+            this.Basis = new Basis(a.Slerp(b, 0.1f));
         }
 
         float sample;
@@ -117,6 +125,7 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        // GD.PrintS(GlobalRotation,Meshes.GlobalRotation);
         if (Input.IsActionJustPressed("restart"))
         {
             GetTree().ReloadCurrentScene();

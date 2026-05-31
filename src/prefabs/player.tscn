@@ -11,7 +11,7 @@ _data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e4ep1"]
-albedo_color = Color(0.77254903, 0.7294118, 1, 1)
+albedo_color = Color(2.1643553, 2.1643553, 0.36337692, 1)
 emission_enabled = true
 emission = Color(0.77254903, 0.7294118, 1, 1)
 emission_energy_multiplier = 0.34
@@ -207,6 +207,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("Meshes", "JumpTimer", "HangTimer", "Ani")]
+collision_layer = 2
 script = ExtResource("1_72ieh")
 CAYOTE_TIME = 0.2
 curve_easing = SubResource("Curve_744qn")
@@ -220,7 +221,7 @@ Ani = NodePath("AnimationPlayer")
 transform = Transform3D(0.99999845, 0, -0.0017453283, 0, 1, 0, 0.0017453283, 0, 0.99999845, 0, -0.00046899915, 0)
 
 [node name="head" type="MeshInstance3D" parent="Meshes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3736868, 0.51927584, -0.012357146)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51927584, 0.432)
 mesh = SubResource("BoxMesh_72ieh")
 skeleton = NodePath("../body")
 

@@ -1,10 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjqi335chpm8p"]
+[gd_scene load_steps=3 format=3 uid="uid://bjqi335chpm8p"]
 
 [ext_resource type="Script" uid="uid://dllbrlw5c3gbu" path="res://src/scripts/CameraController.cs" id="1_h8alv"]
 
-[node name="CameraController" type="Node3D" node_paths=PackedStringArray("CameraYaw", "CamPitch", "CamZoom")]
+[sub_resource type="Curve" id="Curve_h8alv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.48015875, 0.19159675), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="CameraController" type="Node3D" node_paths=PackedStringArray("CamYaw", "CamPitch", "CamZoom")]
 script = ExtResource("1_h8alv")
-CameraYaw = NodePath("CameraYaw")
+waitcurve = SubResource("Curve_h8alv")
+CamYaw = NodePath("CameraYaw")
 CamPitch = NodePath("CameraYaw/CamPítch")
 CamZoom = NodePath("CameraYaw/CamPítch/CamZoom")
 
